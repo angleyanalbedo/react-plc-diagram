@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="react-plc-diagram" productName="PLCopen XML test fixtures" productVersion="0.1.0" creationDateTime="2026-08-12T00:00:00Z"/>
+  <contentHeader name="Basic LD rung" modificationDateTime="2026-08-12T00:00:00Z">
+    <coordinateInfo><fbd><scaling x="1" y="1"/></fbd><ld><scaling x="1" y="1"/></ld><sfc><scaling x="1" y="1"/></sfc></coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="BasicRung" pouType="program">
+        <interface><localVars>
+          <variable name="Start"><type><BOOL/></type></variable>
+          <variable name="Motor"><type><BOOL/></type></variable>
+        </localVars></interface>
+        <body>
+          <LD>
+            <leftPowerRail localId="1" height="100" width="10">
+              <position x="20" y="20"/>
+              <connectionPointOut formalParameter="1"><relPosition x="10" y="50"/></connectionPointOut>
+            </leftPowerRail>
+            <contact localId="2" height="30" width="40" negated="false">
+              <position x="90" y="55"/>
+              <connectionPointIn><relPosition x="0" y="15"/><connection refLocalId="1" formalParameter="1"><position x="60" y="70"/></connection></connectionPointIn>
+              <connectionPointOut><relPosition x="40" y="15"/></connectionPointOut>
+              <variable>Start</variable>
+            </contact>
+            <coil localId="3" height="30" width="40" negated="false" storage="none">
+              <position x="210" y="55"/>
+              <connectionPointIn><relPosition x="0" y="15"/><connection refLocalId="2"><position x="170" y="70"/></connection></connectionPointIn>
+              <connectionPointOut><relPosition x="40" y="15"/></connectionPointOut>
+              <variable>Motor</variable>
+            </coil>
+            <rightPowerRail localId="4" height="100" width="10">
+              <position x="320" y="20"/>
+              <connectionPointIn><relPosition x="0" y="50"/><connection refLocalId="3"><position x="285" y="70"/></connection></connectionPointIn>
+            </rightPowerRail>
+          </LD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances><configurations/></instances>
+</project>
+

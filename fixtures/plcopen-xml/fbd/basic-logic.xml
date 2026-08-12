@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0201"
+         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <fileHeader companyName="react-plc-diagram"
+              productName="PLCopen XML test fixtures"
+              productVersion="0.1.0"
+              creationDateTime="2026-08-12T00:00:00Z"/>
+  <contentHeader name="Basic FBD logic" modificationDateTime="2026-08-12T00:00:00Z">
+    <coordinateInfo>
+      <fbd><scaling x="1" y="1"/></fbd>
+      <ld><scaling x="1" y="1"/></ld>
+      <sfc><scaling x="1" y="1"/></sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="BasicLogic" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="Start"><type><BOOL/></type></variable>
+            <variable name="Safe"><type><BOOL/></type></variable>
+            <variable name="Motor"><type><BOOL/></type></variable>
+          </localVars>
+        </interface>
+        <body>
+          <FBD>
+            <inVariable localId="1" width="70" height="24">
+              <position x="20" y="40"/>
+              <connectionPointOut><relPosition x="70" y="12"/></connectionPointOut>
+              <expression>Start</expression>
+            </inVariable>
+            <inVariable localId="2" width="70" height="24">
+              <position x="20" y="90"/>
+              <connectionPointOut><relPosition x="70" y="12"/></connectionPointOut>
+              <expression>Safe</expression>
+            </inVariable>
+            <block localId="3" typeName="AND" width="80" height="70">
+              <position x="150" y="38"/>
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn>
+                    <relPosition x="0" y="18"/>
+                    <connection refLocalId="1"><position x="120" y="56"/></connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn>
+                    <relPosition x="0" y="52"/>
+                    <connection refLocalId="2"><position x="120" y="102"/><position x="120" y="90"/></connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut><relPosition x="80" y="35"/></connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <outVariable localId="4" width="70" height="24">
+              <position x="300" y="62"/>
+              <connectionPointIn>
+                <relPosition x="0" y="12"/>
+                <connection refLocalId="3" formalParameter="OUT"><position x="265" y="73"/></connection>
+              </connectionPointIn>
+              <expression>Motor</expression>
+            </outVariable>
+          </FBD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances><configurations/></instances>
+</project>
+
