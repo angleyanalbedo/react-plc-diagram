@@ -30,42 +30,30 @@ const ldProgram: OpenPlcProgram = {
 };
 
 const fbdProgram: OpenPlcProgram = {
-  name: "FBD Blocks",
+  name: "FBD Timer",
   diagram: {
     language: "fbd",
-    bounds: { x: 0, y: 0, width: 520, height: 300 },
+    bounds: { x: 0, y: 0, width: 520, height: 230 },
     nodes: [
-      { id: "ton", type: "block", typeName: "TON", instanceName: "Timer0", bounds: { x: 120, y: 30, width: 110, height: 100 }, pins: [
-        { id: "in", side: "input", name: "IN", variable: "Start", position: { x: 120, y: 68 } },
-        { id: "pt", side: "input", name: "PT", variable: "T#3s", position: { x: 120, y: 105 } },
-        { id: "q", side: "output", name: "Q", variable: "Motor", position: { x: 230, y: 68 } },
-        { id: "et", side: "output", name: "ET", variable: "Elapsed", position: { x: 230, y: 105 } },
+      { id: "start", type: "variable", label: "Start", typeName: "BOOL", bounds: { x: 24, y: 58, width: 82, height: 30 } },
+      { id: "preset", type: "variable", label: "T#3s", typeName: "TIME", bounds: { x: 24, y: 112, width: 82, height: 30 } },
+      { id: "ton", type: "block", typeName: "TON", instanceName: "Timer0", bounds: { x: 190, y: 48, width: 110, height: 100 }, pins: [
+        { id: "in", side: "input", name: "IN", position: { x: 190, y: 82 } },
+        { id: "pt", side: "input", name: "PT", position: { x: 190, y: 117 } },
+        { id: "q", side: "output", name: "Q", position: { x: 300, y: 82 } },
+        { id: "et", side: "output", name: "ET", position: { x: 300, y: 117 } },
       ] },
-      { id: "and", type: "block", typeName: "AND", instanceName: "Logic0", bounds: { x: 330, y: 30, width: 100, height: 90 }, pins: [
-        { id: "in1", side: "input", name: "IN1", variable: "A", position: { x: 330, y: 63 } },
-        { id: "in2", side: "input", name: "IN2", variable: "B", position: { x: 330, y: 96 } },
-        { id: "out", side: "output", name: "OUT", variable: "Ready", position: { x: 430, y: 80 } },
-      ] },
-      { id: "ctu", type: "block", typeName: "CTU", instanceName: "Counter0", bounds: { x: 120, y: 170, width: 110, height: 100 }, pins: [
-        { id: "cu", side: "input", name: "CU", variable: "Pulse", position: { x: 120, y: 205 } },
-        { id: "pv", side: "input", name: "PV", variable: "10", position: { x: 120, y: 242 } },
-        { id: "q", side: "output", name: "Q", variable: "Done", position: { x: 230, y: 205 } },
-        { id: "cv", side: "output", name: "CV", variable: "Count", position: { x: 230, y: 242 } },
-      ] },
-      { id: "or", type: "block", typeName: "OR", instanceName: "Logic1", bounds: { x: 330, y: 170, width: 100, height: 90 }, pins: [
-        { id: "in1", side: "input", name: "IN1", variable: "Ready", position: { x: 330, y: 203 } },
-        { id: "in2", side: "input", name: "IN2", variable: "Done", position: { x: 330, y: 236 } },
-        { id: "out", side: "output", name: "OUT", variable: "Run", position: { x: 430, y: 220 } },
-      ] },
+      { id: "motor", type: "variable", label: "Motor", typeName: "BOOL", bounds: { x: 372, y: 58, width: 82, height: 30 } },
+      { id: "elapsed", type: "variable", label: "Elapsed", typeName: "TIME", bounds: { x: 372, y: 112, width: 82, height: 30 } },
     ],
     edges: [
-      { id: "ton-and", source: { nodeId: "ton", pinId: "q" }, target: { nodeId: "and", pinId: "in1" }, points: [{ x: 230, y: 68 }, { x: 295, y: 68 }, { x: 295, y: 63 }, { x: 330, y: 63 }] },
-      { id: "ctu-or", source: { nodeId: "ctu", pinId: "q" }, target: { nodeId: "or", pinId: "in2" }, points: [{ x: 230, y: 205 }, { x: 295, y: 205 }, { x: 295, y: 236 }, { x: 330, y: 236 }] },
-      { id: "and-or", source: { nodeId: "and", pinId: "out" }, target: { nodeId: "or", pinId: "in1" }, points: [{ x: 430, y: 80 }, { x: 470, y: 80 }, { x: 470, y: 203 }, { x: 330, y: 203 }] },
+      { id: "start-in", source: { nodeId: "start" }, target: { nodeId: "ton", pinId: "in" }, points: [{ x: 106, y: 73 }, { x: 145, y: 73 }, { x: 145, y: 82 }, { x: 190, y: 82 }] },
+      { id: "preset-pt", source: { nodeId: "preset" }, target: { nodeId: "ton", pinId: "pt" }, points: [{ x: 106, y: 127 }, { x: 145, y: 127 }, { x: 145, y: 117 }, { x: 190, y: 117 }] },
+      { id: "q-motor", source: { nodeId: "ton", pinId: "q" }, target: { nodeId: "motor" }, points: [{ x: 300, y: 82 }, { x: 340, y: 82 }, { x: 340, y: 73 }, { x: 372, y: 73 }] },
+      { id: "et-elapsed", source: { nodeId: "ton", pinId: "et" }, target: { nodeId: "elapsed" }, points: [{ x: 300, y: 117 }, { x: 340, y: 117 }, { x: 340, y: 127 }, { x: 372, y: 127 }] },
     ],
   },
 };
-
 const ldFunctionBlockProgram: OpenPlcProgram = {
   name: "LD Function Block",
   diagram: {

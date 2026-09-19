@@ -18,7 +18,7 @@ const edgePoints = (points: { x: number; y: number }[]): string =>
 const nodeClass = (type: string, variant?: OpenPlcVariant): string =>
   "plc-node plc-" + type + (variant ? " plc-" + variant : "");
 
-function PinView({ pin, connected }: { pin: OpenPlcPin; connected: boolean }) {
+function PinView({ pin }: { pin: OpenPlcPin }) {
   const isInput = pin.side === "input";
   return (
     <g className={"plc-pin plc-pin-" + pin.side}>
@@ -37,20 +37,10 @@ function PinView({ pin, connected }: { pin: OpenPlcPin; connected: boolean }) {
       >
         {pin.name}
       </text>
-      {pin.variable && !connected && (
-        <text
-          className="plc-pin-variable"
-          x={pin.position.x + (isInput ? -14 : 14)}
-          y={pin.position.y + 4}
-          textAnchor={isInput ? "end" : "start"}
-        >
-          {pin.variable}
-        </text>
-      )}
     </g>
   );
 }
-function BlockView({ node, connectedPinIds }: { node: OpenPlcNode; connectedPinIds: Set<string> }) {
+function BlockView({ node }: { node: OpenPlcNode }) {
   const { x, y, width, height } = node.bounds;
   const headerHeight = 23;
   const pins = node.pins ?? [];
@@ -69,11 +59,28 @@ function BlockView({ node, connectedPinIds }: { node: OpenPlcNode; connectedPinI
           {node.instanceName}
         </text>
       )}
-      {pins.map((pin) => <PinView key={pin.id} pin={pin} connected={connectedPinIds.has(pin.id)} />)}
+      {pins.map((pin) => <PinView key={pin.id} pin={pin} />)}
     </g>
   );
 }
 
+function VariableView({ node }: { node: OpenPlcNode }) {
+  const { x, y, width, height } = node.bounds;
+  return (
+    <g className={nodeClass("variable", node.variant)} data-node-id={node.id}>
+      <title>{[node.label, node.typeName].filter(Boolean).join(" ")}</title>
+      <rect className="plc-variable-body" x={x} y={y} width={width} height={height} rx="3" />
+      <text className="plc-variable-name" x={x + width / 2} y={y + 13} textAnchor="middle">
+        {node.label ?? "Variable"}
+      </text>
+      {node.typeName && (
+        <text className="plc-variable-type" x={x + width / 2} y={y + height - 6} textAnchor="middle">
+          {node.typeName}
+        </text>
+      )}
+    </g>
+  );
+}
 function ContactView({ node }: { node: OpenPlcNode }) {
   const { x, y, width, height } = node.bounds;
   const cy = y + height / 2;
@@ -129,8 +136,9 @@ function RailView({ node }: { node: OpenPlcNode }) {
   );
 }
 
-function NodeView({ node, language, connectedPinIds }: { node: OpenPlcNode; language: "ld" | "fbd"; connectedPinIds: Set<string> }) {
-  if (node.type === "block") return <BlockView node={node} connectedPinIds={connectedPinIds} />;
+function NodeView({ node, language }: { node: OpenPlcNode; language: "ld" | "fbd" }) {
+  if (language === "fbd" && node.type === "variable") return <VariableView node={node} />;
+  if (node.type === "block") return <BlockView node={node} />;
   if (language === "ld" && node.type === "contact") return <ContactView node={node} />;
   if (language === "ld" && node.type === "coil") return <CoilView node={node} />;
   if (language === "ld" && node.type === "powerRail") return <RailView node={node} />;
@@ -154,7 +162,7 @@ function DiagramView({ diagram }: { diagram: OpenPlcDiagram }) {
         {diagram.edges.map((edge) => <polyline key={edge.id} points={edgePoints(edge.points)} />)}
       </g>
       <g className="plc-nodes">
-        {diagram.nodes.map((node) => <NodeView key={node.id} node={node} language={diagram.language} connectedPinIds={connectedPinIds} />)}
+        {diagram.nodes.map((node) => <NodeView key={node.id} node={node} language={diagram.language} />)}
       </g>
     </svg>
   );
