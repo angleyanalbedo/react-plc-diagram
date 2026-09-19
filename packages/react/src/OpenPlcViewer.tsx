@@ -84,7 +84,7 @@ function ContactView({ node }: { node: OpenPlcNode }) {
       <line className="plc-symbol" x1={left} y1={y + 2} x2={left} y2={y + height - 2} />
       <line className="plc-symbol" x1={right} y1={y + 2} x2={right} y2={y + height - 2} />
       <line x1={right} y1={cy} x2={x + width} y2={cy} />
-      {node.variant === "negated" && <line className="plc-negation" x1={left - 3} y1={y + height - 2} x2={right + 3} y2={y + 2} />}
+      {node.variant === "negated" && <line className="plc-negation" x1={left + 3} y1={y + height - 5} x2={right - 3} y2={y + 5} />}
       {(node.variant === "risingEdge" || node.variant === "fallingEdge") && (
         <path
           className="plc-edge-marker"
@@ -109,7 +109,7 @@ function CoilView({ node }: { node: OpenPlcNode }) {
       <path className="plc-symbol" d={"M " + (left + 6) + " " + (y + 2) + " Q " + (left - 5) + " " + cy + " " + (left + 6) + " " + (y + height - 2)} />
       <path className="plc-symbol" d={"M " + (right - 6) + " " + (y + 2) + " Q " + (right + 5) + " " + cy + " " + (right - 6) + " " + (y + height - 2)} />
       <line x1={right} y1={cy} x2={x + width} y2={cy} />
-      {node.variant === "negated" && <line className="plc-negation" x1={left + 4} y1={y + height - 2} x2={right - 4} y2={y + 2} />}
+      {node.variant === "negated" && <line className="plc-negation" x1={left + 8} y1={y + height - 5} x2={right - 8} y2={y + 5} />}
       {marker && <text className="plc-marker" x={x + width / 2} y={cy + 4} textAnchor="middle">{marker}</text>}
       {node.label && <text className="plc-label" x={x + width / 2} y={y - 8} textAnchor="middle">{node.label}</text>}
     </g>
