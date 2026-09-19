@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://www.plcopen.org/xml/tc6_0201">
-  <fileHeader companyName="react-plc-diagram" productName="Invalid fixture" productVersion="0.1.0" creationDateTime="2026-08-12T00:00:00Z"/>
-  <contentHeader name="Unresolved reference" modificationDateTime="2026-08-12T00:00:00Z"/>
-  <types><dataTypes/><pous><pou name="BrokenReference" pouType="program"><interface/><body><FBD>
-    <outVariable localId="1" width="70" height="24"><position x="100" y="40"/><connectionPointIn><relPosition x="0" y="12"/><connection refLocalId="999" formalParameter="OUT"/></connectionPointIn><expression>Output</expression></outVariable>
-  </FBD></body></pou></pous></types>
-  <instances><configurations/></instances>
-</project>

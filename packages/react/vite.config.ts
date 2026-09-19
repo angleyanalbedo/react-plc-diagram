@@ -7,10 +7,10 @@ export default defineConfig({
     lib: {
       entry: "src/index.ts",
       formats: ["es"],
-      fileName: "react-plc-diagram",
+      fileName: "index",
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react/jsx-runtime", "@react-plc-diagram/core"],
+      external: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
     },
   },
 });

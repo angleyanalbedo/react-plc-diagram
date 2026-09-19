@@ -1,72 +1,69 @@
-export const PLCOPEN_XML_201_NAMESPACE = "http://www.plcopen.org/xml/tc6_0201";
+export type OpenPlcLanguage = "ld" | "fbd";
 
-export type PlcLanguage = "ld" | "fbd" | "unsupported";
-export type PlcElementKind =
-  | "inVariable" | "outVariable" | "inOutVariable" | "block"
-  | "leftPowerRail" | "rightPowerRail" | "contact" | "coil"
-  | "connector" | "continuation" | "comment";
+export type OpenPlcNodeType =
+  | "powerRail"
+  | "contact"
+  | "coil"
+  | "block"
+  | "variable"
+  | "parallel";
 
-export interface PlcPoint { x: number; y: number }
-export interface PlcBounds extends PlcPoint { width: number; height: number }
+export type OpenPlcVariant =
+  | "left"
+  | "right"
+  | "normal"
+  | "negated"
+  | "set"
+  | "reset"
+  | "risingEdge"
+  | "fallingEdge";
 
-export interface PlcDiagnostic {
-  severity: "error" | "warning" | "info";
-  code: string;
-  message: string;
-  pouName?: string;
-  elementName?: string;
-  localId?: string;
+export interface OpenPlcPoint {
+  x: number;
+  y: number;
 }
 
-export interface PlcPort {
-  formalParameter?: string;
-  position: PlcPoint;
+export interface OpenPlcBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
-export interface PlcElement {
-  localId: string;
-  kind: PlcElementKind;
-  bounds: PlcBounds;
+export interface OpenPlcPin {
+  id: string;
+  side: "input" | "output";
+  name: string;
+  variable?: string;
+  position: OpenPlcPoint;
+}
+
+export interface OpenPlcNode {
+  id: string;
+  type: OpenPlcNodeType;
+  variant?: OpenPlcVariant;
+  bounds: OpenPlcBounds;
   label?: string;
   typeName?: string;
   instanceName?: string;
-  negated?: boolean;
-  storage?: string;
-  inputPorts: PlcPort[];
-  outputPorts: PlcPort[];
+  pins?: OpenPlcPin[];
 }
 
-export interface PlcConnection {
+export interface OpenPlcEdge {
   id: string;
-  source: { localId: string; formalParameter?: string };
-  target: { localId: string; formalParameter?: string };
-  sourcePoint: PlcPoint;
-  targetPoint: PlcPoint;
-  points: PlcPoint[];
+  source: { nodeId: string; pinId?: string };
+  target: { nodeId: string; pinId?: string };
+  points: OpenPlcPoint[];
 }
 
-export interface PlcDiagram {
-  language: Exclude<PlcLanguage, "unsupported">;
-  elements: PlcElement[];
-  connections: PlcConnection[];
-  bounds: PlcBounds;
+export interface OpenPlcDiagram {
+  language: OpenPlcLanguage;
+  bounds: OpenPlcBounds;
+  nodes: OpenPlcNode[];
+  edges: OpenPlcEdge[];
 }
 
-export interface PlcPou {
+export interface OpenPlcProgram {
   name: string;
-  pouType: "program" | "function" | "functionBlock";
-  language: PlcLanguage;
-  diagram?: PlcDiagram;
+  diagram: OpenPlcDiagram;
 }
-
-export interface PlcOpenDocument {
-  format: "plcopen-xml";
-  namespace: string;
-  pous: PlcPou[];
-  diagnostics: PlcDiagnostic[];
-}
-
-export type ParsePlcOpenXmlResult =
-  | { ok: true; document: PlcOpenDocument }
-  | { ok: false; diagnostics: PlcDiagnostic[] };
-

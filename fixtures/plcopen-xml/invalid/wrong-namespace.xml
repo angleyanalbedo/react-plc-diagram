@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="https://example.invalid/not-plcopen">
-  <fileHeader companyName="react-plc-diagram" productName="Invalid fixture" productVersion="0.1.0" creationDateTime="2026-08-12T00:00:00Z"/>
-  <contentHeader name="Wrong namespace" modificationDateTime="2026-08-12T00:00:00Z"/>
-  <types><dataTypes/><pous><pou name="WrongNamespace" pouType="program"><interface/><body><FBD/></body></pou></pous></types>
-  <instances><configurations/></instances>
-</project>
-
