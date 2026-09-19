@@ -35,33 +35,33 @@ const fbdProgram: OpenPlcProgram = {
     language: "fbd",
     bounds: { x: 0, y: 0, width: 520, height: 300 },
     nodes: [
-      { id: "ton", type: "block", typeName: "TON", instanceName: "Timer0", bounds: { x: 120, y: 30, width: 140, height: 100 }, pins: [
+      { id: "ton", type: "block", typeName: "TON", instanceName: "Timer0", bounds: { x: 120, y: 30, width: 110, height: 100 }, pins: [
         { id: "in", side: "input", name: "IN", variable: "Start", position: { x: 120, y: 68 } },
         { id: "pt", side: "input", name: "PT", variable: "T#3s", position: { x: 120, y: 105 } },
-        { id: "q", side: "output", name: "Q", variable: "Motor", position: { x: 260, y: 68 } },
-        { id: "et", side: "output", name: "ET", variable: "Elapsed", position: { x: 260, y: 105 } },
+        { id: "q", side: "output", name: "Q", variable: "Motor", position: { x: 230, y: 68 } },
+        { id: "et", side: "output", name: "ET", variable: "Elapsed", position: { x: 230, y: 105 } },
       ] },
-      { id: "and", type: "block", typeName: "AND", instanceName: "Logic0", bounds: { x: 330, y: 30, width: 110, height: 90 }, pins: [
+      { id: "and", type: "block", typeName: "AND", instanceName: "Logic0", bounds: { x: 330, y: 30, width: 100, height: 90 }, pins: [
         { id: "in1", side: "input", name: "IN1", variable: "A", position: { x: 330, y: 63 } },
         { id: "in2", side: "input", name: "IN2", variable: "B", position: { x: 330, y: 96 } },
-        { id: "out", side: "output", name: "OUT", variable: "Ready", position: { x: 440, y: 80 } },
+        { id: "out", side: "output", name: "OUT", variable: "Ready", position: { x: 430, y: 80 } },
       ] },
-      { id: "ctu", type: "block", typeName: "CTU", instanceName: "Counter0", bounds: { x: 120, y: 170, width: 140, height: 100 }, pins: [
+      { id: "ctu", type: "block", typeName: "CTU", instanceName: "Counter0", bounds: { x: 120, y: 170, width: 110, height: 100 }, pins: [
         { id: "cu", side: "input", name: "CU", variable: "Pulse", position: { x: 120, y: 205 } },
         { id: "pv", side: "input", name: "PV", variable: "10", position: { x: 120, y: 242 } },
-        { id: "q", side: "output", name: "Q", variable: "Done", position: { x: 260, y: 205 } },
-        { id: "cv", side: "output", name: "CV", variable: "Count", position: { x: 260, y: 242 } },
+        { id: "q", side: "output", name: "Q", variable: "Done", position: { x: 230, y: 205 } },
+        { id: "cv", side: "output", name: "CV", variable: "Count", position: { x: 230, y: 242 } },
       ] },
-      { id: "or", type: "block", typeName: "OR", instanceName: "Logic1", bounds: { x: 330, y: 170, width: 110, height: 90 }, pins: [
+      { id: "or", type: "block", typeName: "OR", instanceName: "Logic1", bounds: { x: 330, y: 170, width: 100, height: 90 }, pins: [
         { id: "in1", side: "input", name: "IN1", variable: "Ready", position: { x: 330, y: 203 } },
         { id: "in2", side: "input", name: "IN2", variable: "Done", position: { x: 330, y: 236 } },
-        { id: "out", side: "output", name: "OUT", variable: "Run", position: { x: 440, y: 220 } },
+        { id: "out", side: "output", name: "OUT", variable: "Run", position: { x: 430, y: 220 } },
       ] },
     ],
     edges: [
-      { id: "ton-and", source: { nodeId: "ton", pinId: "q" }, target: { nodeId: "and", pinId: "in1" }, points: [{ x: 260, y: 68 }, { x: 295, y: 68 }, { x: 295, y: 63 }, { x: 330, y: 63 }] },
-      { id: "ctu-or", source: { nodeId: "ctu", pinId: "q" }, target: { nodeId: "or", pinId: "in2" }, points: [{ x: 260, y: 205 }, { x: 295, y: 205 }, { x: 295, y: 236 }, { x: 330, y: 236 }] },
-      { id: "and-or", source: { nodeId: "and", pinId: "out" }, target: { nodeId: "or", pinId: "in1" }, points: [{ x: 440, y: 80 }, { x: 470, y: 80 }, { x: 470, y: 203 }, { x: 330, y: 203 }] },
+      { id: "ton-and", source: { nodeId: "ton", pinId: "q" }, target: { nodeId: "and", pinId: "in1" }, points: [{ x: 230, y: 68 }, { x: 295, y: 68 }, { x: 295, y: 63 }, { x: 330, y: 63 }] },
+      { id: "ctu-or", source: { nodeId: "ctu", pinId: "q" }, target: { nodeId: "or", pinId: "in2" }, points: [{ x: 230, y: 205 }, { x: 295, y: 205 }, { x: 295, y: 236 }, { x: 330, y: 236 }] },
+      { id: "and-or", source: { nodeId: "and", pinId: "out" }, target: { nodeId: "or", pinId: "in1" }, points: [{ x: 430, y: 80 }, { x: 470, y: 80 }, { x: 470, y: 203 }, { x: 330, y: 203 }] },
     ],
   },
 };
@@ -74,19 +74,19 @@ const ldFunctionBlockProgram: OpenPlcProgram = {
     nodes: [
       { id: "left-rail", type: "powerRail", variant: "left", bounds: { x: 28, y: 20, width: 8, height: 150 } },
       { id: "start", type: "contact", variant: "normal", label: "Start", bounds: { x: 75, y: 64, width: 54, height: 32 } },
-      { id: "ton", type: "block", typeName: "TON", instanceName: "Timer0", bounds: { x: 190, y: 42, width: 140, height: 90 }, pins: [
+      { id: "ton", type: "block", typeName: "TON", instanceName: "Timer0", bounds: { x: 190, y: 42, width: 110, height: 90 }, pins: [
         { id: "in", side: "input", name: "IN", variable: "Start", position: { x: 190, y: 77 } },
         { id: "pt", side: "input", name: "PT", variable: "T#3s", position: { x: 190, y: 112 } },
-        { id: "q", side: "output", name: "Q", variable: "Motor", position: { x: 330, y: 77 } },
+        { id: "q", side: "output", name: "Q", variable: "Motor", position: { x: 300, y: 77 } },
       ] },
-      { id: "motor", type: "coil", variant: "normal", label: "Motor", bounds: { x: 390, y: 61, width: 54, height: 32 } },
+      { id: "motor", type: "coil", variant: "normal", label: "Motor", bounds: { x: 360, y: 61, width: 54, height: 32 } },
       { id: "right-rail", type: "powerRail", variant: "right", bounds: { x: 480, y: 20, width: 8, height: 150 } },
     ],
     edges: [
       { id: "rail-start", source: { nodeId: "left-rail" }, target: { nodeId: "start" }, points: [{ x: 36, y: 80 }, { x: 75, y: 80 }] },
       { id: "start-ton", source: { nodeId: "start" }, target: { nodeId: "ton", pinId: "in" }, points: [{ x: 129, y: 80 }, { x: 160, y: 80 }, { x: 160, y: 77 }, { x: 190, y: 77 }] },
-      { id: "ton-motor", source: { nodeId: "ton", pinId: "q" }, target: { nodeId: "motor" }, points: [{ x: 330, y: 77 }, { x: 390, y: 77 }] },
-      { id: "motor-rail", source: { nodeId: "motor" }, target: { nodeId: "right-rail" }, points: [{ x: 444, y: 77 }, { x: 480, y: 77 }] },
+      { id: "ton-motor", source: { nodeId: "ton", pinId: "q" }, target: { nodeId: "motor" }, points: [{ x: 300, y: 77 }, { x: 360, y: 77 }] },
+      { id: "motor-rail", source: { nodeId: "motor" }, target: { nodeId: "right-rail" }, points: [{ x: 414, y: 77 }, { x: 480, y: 77 }] },
     ],
   },
 };
