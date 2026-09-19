@@ -74,7 +74,7 @@ const ldFunctionBlockProgram: OpenPlcProgram = {
       { id: "rail-start", source: { nodeId: "left-rail" }, target: { nodeId: "start" }, points: [{ x: 36, y: 80 }, { x: 75, y: 80 }] },
       { id: "start-ton", source: { nodeId: "start" }, target: { nodeId: "ton", pinId: "in" }, points: [{ x: 129, y: 80 }, { x: 190, y: 80 }] },
       { id: "ton-motor", source: { nodeId: "ton", pinId: "q" }, target: { nodeId: "motor" }, points: [{ x: 300, y: 80 }, { x: 360, y: 80 }] },
-      { id: "motor-rail", source: { nodeId: "motor" }, target: { nodeId: "right-rail" }, points: [{ x: 414, y: 77 }, { x: 480, y: 77 }] },
+      { id: "motor-rail", source: { nodeId: "motor" }, target: { nodeId: "right-rail" }, points: [{ x: 414, y: 80 }, { x: 480, y: 80 }] },
     ],
   },
 };
