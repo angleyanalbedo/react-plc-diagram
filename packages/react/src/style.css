@@ -3,9 +3,11 @@
   --plc-panel: #ffffff;
   --plc-border: #d0d5dd;
   --plc-grid: #eef1f5;
-  --plc-wire: #344054;
+  --plc-wire: #526581;
   --plc-text: #1d2939;
   --plc-label: #344054;
+  --plc-rail: #243b64;
+  --plc-block: #5166a8;
   display: block;
   overflow: hidden;
   color: var(--plc-text);
@@ -49,7 +51,7 @@
 }
 .plc-edges polyline {
   fill: none;
-  stroke: var(--plc-wire);
+  stroke: #8293ad;
   stroke-width: 1.4;
   stroke-linecap: square;
   stroke-linejoin: miter;
@@ -63,8 +65,18 @@
   vector-effect: non-scaling-stroke;
 }
 .plc-node .plc-symbol { stroke-width: 1.85; }
-.plc-node .plc-negation { stroke-width: 1.35; }
-.plc-rail { stroke-width: 2.8 !important; }
+.plc-node .plc-negation {
+  stroke: #d97706 !important;
+  stroke-width: 1.6 !important;
+}
+.plc-rail {
+  stroke: var(--plc-rail) !important;
+  stroke-width: 3 !important;
+}
+.plc-edge-marker {
+  stroke: #2563eb !important;
+  stroke-width: 1.35 !important;
+}
 .plc-label {
   fill: var(--plc-label);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -77,14 +89,18 @@
   font-size: 10px;
   font-weight: 700;
 }
+.plc-coil.plc-set .plc-marker { fill: #039855; }
+.plc-coil.plc-reset .plc-marker { fill: #d92d20; }
+.plc-coil.plc-risingEdge .plc-marker { fill: #2563eb; }
+.plc-coil.plc-fallingEdge .plc-marker { fill: #7c3aed; }
 .plc-block-body {
   fill: var(--plc-panel);
-  stroke: var(--plc-wire);
+  stroke: var(--plc-block);
   stroke-width: 1.3;
   vector-effect: non-scaling-stroke;
 }
 .plc-block-header {
-  stroke: var(--plc-wire);
+  stroke: #8998c6;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
@@ -99,13 +115,13 @@
   font-size: 9.5px;
 }
 .plc-pin line {
-  stroke: var(--plc-wire);
+  stroke: #7b8baa;
   stroke-width: 1.2;
   vector-effect: non-scaling-stroke;
 }
 .plc-pin circle {
   fill: var(--plc-panel);
-  stroke: var(--plc-wire);
+  stroke: #65779b;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
@@ -114,11 +130,4 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 9.5px;
 }
-
-.plc-pin-variable {
-  fill: #98a2b3 !important;
-}
-
-.plc-edge-marker {
-  stroke-width: 1.35 !important;
-}
+.plc-pin-variable { fill: #98a2b3 !important; }
