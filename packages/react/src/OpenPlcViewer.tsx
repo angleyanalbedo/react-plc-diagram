@@ -135,10 +135,28 @@ function NodeView({ node, language }: { node: OpenPlcNode; language: "ld" | "fbd
   return null;
 }
 
+function diagramViewBox(diagram: OpenPlcDiagram): string {
+  const points = [
+    ...diagram.nodes.flatMap((node) => [
+      { x: node.bounds.x, y: node.bounds.y },
+      { x: node.bounds.x + node.bounds.width, y: node.bounds.y + node.bounds.height },
+    ]),
+    ...diagram.edges.flatMap((edge) => edge.points),
+  ];
+  if (points.length === 0) {
+    return `${diagram.bounds.x} ${diagram.bounds.y} ${diagram.bounds.width} ${diagram.bounds.height}`;
+  }
+  const padding = 18;
+  const minX = Math.min(...points.map((point) => point.x)) - padding;
+  const minY = Math.min(...points.map((point) => point.y)) - padding;
+  const maxX = Math.max(...points.map((point) => point.x)) + padding;
+  const maxY = Math.max(...points.map((point) => point.y)) + padding;
+  return `${minX} ${minY} ${maxX - minX} ${maxY - minY}`;
+}
 function DiagramView({ diagram }: { diagram: OpenPlcDiagram }) {
   const patternId = useId().replaceAll(":", "");
   return (
-    <svg viewBox={diagram.bounds.x + " " + diagram.bounds.y + " " + diagram.bounds.width + " " + diagram.bounds.height} role="img" aria-label={diagram.language.toUpperCase() + " diagram"}>
+    <svg viewBox={diagramViewBox(diagram)} role="img" aria-label={diagram.language.toUpperCase() + " diagram"}>
       <defs>
         <pattern id={patternId} width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M 20 0 L 0 0 0 20" />
