@@ -18,7 +18,7 @@ const edgePoints = (points: { x: number; y: number }[]): string =>
 const nodeClass = (type: string, variant?: OpenPlcVariant): string =>
   "plc-node plc-" + type + (variant ? " plc-" + variant : "");
 
-function PinView({ pin }: { pin: OpenPlcPin }) {
+function PinView({ pin, connected }: { pin: OpenPlcPin; connected: boolean }) {
   const isInput = pin.side === "input";
   return (
     <g className={"plc-pin plc-pin-" + pin.side}>
@@ -37,7 +37,7 @@ function PinView({ pin }: { pin: OpenPlcPin }) {
       >
         {pin.name}
       </text>
-      {pin.variable && (
+      {pin.variable && !connected && (
         <text
           className="plc-pin-variable"
           x={pin.position.x + (isInput ? -14 : 14)}
@@ -50,14 +50,16 @@ function PinView({ pin }: { pin: OpenPlcPin }) {
     </g>
   );
 }
-function BlockView({ node }: { node: OpenPlcNode }) {
+function BlockView({ node, connectedPinIds }: { node: OpenPlcNode; connectedPinIds: Set<string> }) {
   const { x, y, width, height } = node.bounds;
   const headerHeight = 23;
   const pins = node.pins ?? [];
+  const pinRows = pins.length > 0 ? Math.max(...pins.map((pin) => pin.position.y)) - y : headerHeight + 18;
+  const compactHeight = Math.max(headerHeight + 34, pinRows + 18);
   return (
     <g className={nodeClass("block", node.variant)} data-node-id={node.id}>
       <title>{[node.instanceName, node.typeName].filter(Boolean).join(" ")}</title>
-      <rect className="plc-block-body" x={x} y={y} width={width} height={height} rx="2" />
+      <rect className="plc-block-body" x={x} y={y} width={width} height={Math.min(height, compactHeight)} rx="2" />
       <line className="plc-block-header" x1={x} y1={y + headerHeight} x2={x + width} y2={y + headerHeight} />
       <text className="plc-block-type" x={x + width / 2} y={y + 16} textAnchor="middle">
         {node.typeName ?? "BLOCK"}
@@ -67,7 +69,7 @@ function BlockView({ node }: { node: OpenPlcNode }) {
           {node.instanceName}
         </text>
       )}
-      {pins.map((pin) => <PinView key={pin.id} pin={pin} />)}
+      {pins.map((pin) => <PinView key={pin.id} pin={pin} connected={connectedPinIds.has(pin.id)} />)}
     </g>
   );
 }
@@ -127,36 +129,21 @@ function RailView({ node }: { node: OpenPlcNode }) {
   );
 }
 
-function NodeView({ node, language }: { node: OpenPlcNode; language: "ld" | "fbd" }) {
-  if (node.type === "block") return <BlockView node={node} />;
+function NodeView({ node, language, connectedPinIds }: { node: OpenPlcNode; language: "ld" | "fbd"; connectedPinIds: Set<string> }) {
+  if (node.type === "block") return <BlockView node={node} connectedPinIds={connectedPinIds} />;
   if (language === "ld" && node.type === "contact") return <ContactView node={node} />;
   if (language === "ld" && node.type === "coil") return <CoilView node={node} />;
   if (language === "ld" && node.type === "powerRail") return <RailView node={node} />;
   return null;
 }
 
-function diagramViewBox(diagram: OpenPlcDiagram): string {
-  const points = [
-    ...diagram.nodes.flatMap((node) => [
-      { x: node.bounds.x, y: node.bounds.y },
-      { x: node.bounds.x + node.bounds.width, y: node.bounds.y + node.bounds.height },
-    ]),
-    ...diagram.edges.flatMap((edge) => edge.points),
-  ];
-  if (points.length === 0) {
-    return `${diagram.bounds.x} ${diagram.bounds.y} ${diagram.bounds.width} ${diagram.bounds.height}`;
-  }
-  const padding = 18;
-  const minX = Math.min(...points.map((point) => point.x)) - padding;
-  const minY = Math.min(...points.map((point) => point.y)) - padding;
-  const maxX = Math.max(...points.map((point) => point.x)) + padding;
-  const maxY = Math.max(...points.map((point) => point.y)) + padding;
-  return `${minX} ${minY} ${maxX - minX} ${maxY - minY}`;
-}
 function DiagramView({ diagram }: { diagram: OpenPlcDiagram }) {
   const patternId = useId().replaceAll(":", "");
+  const connectedPinIds = new Set(
+    diagram.edges.flatMap((edge) => [edge.source.pinId, edge.target.pinId]).filter(Boolean) as string[],
+  );
   return (
-    <svg viewBox={diagramViewBox(diagram)} role="img" aria-label={diagram.language.toUpperCase() + " diagram"}>
+    <svg viewBox={diagram.bounds.x + " " + diagram.bounds.y + " " + diagram.bounds.width + " " + diagram.bounds.height} role="img" aria-label={diagram.language.toUpperCase() + " diagram"}>
       <defs>
         <pattern id={patternId} width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M 20 0 L 0 0 0 20" />
@@ -167,7 +154,7 @@ function DiagramView({ diagram }: { diagram: OpenPlcDiagram }) {
         {diagram.edges.map((edge) => <polyline key={edge.id} points={edgePoints(edge.points)} />)}
       </g>
       <g className="plc-nodes">
-        {diagram.nodes.map((node) => <NodeView key={node.id} node={node} language={diagram.language} />)}
+        {diagram.nodes.map((node) => <NodeView key={node.id} node={node} language={diagram.language} connectedPinIds={connectedPinIds} />)}
       </g>
     </svg>
   );
