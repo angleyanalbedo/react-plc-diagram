@@ -85,6 +85,12 @@ function ContactView({ node }: { node: OpenPlcNode }) {
       <line className="plc-symbol" x1={right} y1={y + 2} x2={right} y2={y + height - 2} />
       <line x1={right} y1={cy} x2={x + width} y2={cy} />
       {node.variant === "negated" && <line className="plc-negation" x1={left - 3} y1={y + height - 2} x2={right + 3} y2={y + 2} />}
+      {(node.variant === "risingEdge" || node.variant === "fallingEdge") && (
+        <path
+          className="plc-edge-marker"
+          d={node.variant === "risingEdge" ? `M ${left - 9} ${cy + 6} l 6 -6 l -6 -6` : `M ${right + 9} ${cy - 6} l -6 6 l 6 6`}
+        />
+      )}
       {node.label && <text className="plc-label" x={x + width / 2} y={y - 8} textAnchor="middle">{node.label}</text>}
     </g>
   );
@@ -95,7 +101,7 @@ function CoilView({ node }: { node: OpenPlcNode }) {
   const cy = y + height / 2;
   const left = x + width * 0.29;
   const right = x + width * 0.71;
-  const marker = node.variant === "set" ? "S" : node.variant === "reset" ? "R" : "";
+  const marker = node.variant === "set" ? "S" : node.variant === "reset" ? "R" : node.variant === "risingEdge" ? "P" : node.variant === "fallingEdge" ? "N" : "";
   return (
     <g className={nodeClass("coil", node.variant)} data-node-id={node.id}>
       <title>{node.label ?? "Coil"}</title>

@@ -118,3 +118,7 @@
 .plc-pin-variable {
   fill: #98a2b3 !important;
 }
+
+.plc-edge-marker {
+  stroke-width: 1.35 !important;
+}

@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import type { OpenPlcProgram } from "@react-plc-diagram/core";
+import type { OpenPlcProgram, OpenPlcVariant } from "@react-plc-diagram/core";
 import { OpenPlcViewer } from "@react-plc-diagram/react";
 import "@react-plc-diagram/react/style.css";
 import "./page.css";
@@ -51,6 +51,47 @@ const fbdProgram: OpenPlcProgram = {
   },
 };
 
+type SymbolRow = { variant: OpenPlcVariant; label: string };
+
+function makeSymbolProgram(name: string, nodeType: "contact" | "coil", rows: SymbolRow[]): OpenPlcProgram {
+  const height = Math.max(230, rows.length * 52 + 34);
+  const leftRailX = 28;
+  const rightRailX = 492;
+  const nodeX = 210;
+  const nodeWidth = 64;
+  const nodes = [
+    { id: "left-rail", type: "powerRail" as const, variant: "left" as const, bounds: { x: leftRailX, y: 18, width: 8, height: height - 36 } },
+    { id: "right-rail", type: "powerRail" as const, variant: "right" as const, bounds: { x: rightRailX, y: 18, width: 8, height: height - 36 } },
+    ...rows.map((row, index) => {
+      const y = 28 + index * 52;
+      return { id: `${nodeType}-${row.variant}`, type: nodeType, variant: row.variant, label: row.label, bounds: { x: nodeX, y, width: nodeWidth, height: 32 } };
+    }),
+  ];
+  const edges = rows.map((row, index) => {
+    const y = 44 + index * 52;
+    return [
+      { id: `${row.variant}-in`, source: { nodeId: "left-rail" }, target: { nodeId: `${nodeType}-${row.variant}` }, points: [{ x: leftRailX + 8, y }, { x: nodeX, y }] },
+      { id: `${row.variant}-out`, source: { nodeId: `${nodeType}-${row.variant}` }, target: { nodeId: "right-rail" }, points: [{ x: nodeX + nodeWidth, y }, { x: rightRailX, y }] },
+    ];
+  }).flat();
+  return { name, diagram: { language: "ld", bounds: { x: 0, y: 0, width: 520, height }, nodes, edges } };
+}
+
+const contactSymbols = makeSymbolProgram("Contact Symbols", "contact", [
+  { variant: "normal", label: "Normal / NO" },
+  { variant: "negated", label: "Negated / NC" },
+  { variant: "risingEdge", label: "Rising edge" },
+  { variant: "fallingEdge", label: "Falling edge" },
+]);
+
+const coilSymbols = makeSymbolProgram("Coil Symbols", "coil", [
+  { variant: "normal", label: "Normal" },
+  { variant: "negated", label: "Negated" },
+  { variant: "set", label: "Set" },
+  { variant: "reset", label: "Reset" },
+  { variant: "risingEdge", label: "Rising edge" },
+  { variant: "fallingEdge", label: "Falling edge" },
+]);
 function App() {
   return (
     <main>
@@ -69,7 +110,23 @@ function App() {
           <OpenPlcViewer program={fbdProgram} />
         </article>
       </section>
-    </main>
+      <section className="symbol-showcase">
+        <div className="showcase-heading">
+          <p className="eyebrow">LD SYMBOL GALLERY</p>
+          <h2>所有开关与线圈类型</h2>
+          <p>每一行对应一个节点变体，先确认符号形状，再进入编辑和 XML 映射。</p>
+        </div>
+        <div className="examples">
+          <article>
+            <div className="heading"><span>CONTACT</span><h2>开关 / 触点</h2></div>
+            <OpenPlcViewer program={contactSymbols} className="symbol-showcase-viewer" />
+          </article>
+          <article>
+            <div className="heading"><span>COIL</span><h2>线圈</h2></div>
+            <OpenPlcViewer program={coilSymbols} className="symbol-showcase-viewer" />
+          </article>
+        </div>
+      </section>    </main>
   );
 }
 

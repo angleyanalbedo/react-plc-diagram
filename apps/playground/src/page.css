@@ -19,3 +19,10 @@ article { padding: 18px; background: rgba(255,255,255,.78); border: 1px solid #d
   main { width: min(100% - 20px, 1120px); padding: 28px 0; }
   article { padding: 10px; }
 }
+
+.symbol-showcase { margin-top: 30px; }
+.showcase-heading { margin: 0 0 14px; }
+.showcase-heading h2 { margin: 0 0 8px; font-size: 24px; }
+.showcase-heading p:last-child { margin: 0; color: #475467; }
+.symbol-showcase-viewer .plc-canvas { height: 340px; }
+
