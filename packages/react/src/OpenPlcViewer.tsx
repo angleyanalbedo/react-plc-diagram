@@ -20,7 +20,6 @@ const nodeClass = (type: string, variant?: OpenPlcVariant): string =>
 
 function PinView({ pin }: { pin: OpenPlcPin }) {
   const isInput = pin.side === "input";
-  const text = [pin.name, pin.variable].filter(Boolean).join("  ");
   return (
     <g className={"plc-pin plc-pin-" + pin.side}>
       <line
@@ -30,19 +29,27 @@ function PinView({ pin }: { pin: OpenPlcPin }) {
         y2={pin.position.y}
       />
       <circle cx={pin.position.x} cy={pin.position.y} r="2" />
-      {text && (
+      <text
+        className="plc-pin-name"
+        x={pin.position.x + (isInput ? 8 : -8)}
+        y={pin.position.y + 4}
+        textAnchor={isInput ? "start" : "end"}
+      >
+        {pin.name}
+      </text>
+      {pin.variable && (
         <text
-          x={pin.position.x + (isInput ? 8 : -8)}
+          className="plc-pin-variable"
+          x={pin.position.x + (isInput ? -14 : 14)}
           y={pin.position.y + 4}
-          textAnchor={isInput ? "start" : "end"}
+          textAnchor={isInput ? "end" : "start"}
         >
-          {text}
+          {pin.variable}
         </text>
       )}
     </g>
   );
 }
-
 function BlockView({ node }: { node: OpenPlcNode }) {
   const { x, y, width, height } = node.bounds;
   const headerHeight = 23;

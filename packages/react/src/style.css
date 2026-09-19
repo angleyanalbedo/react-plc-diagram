@@ -114,3 +114,7 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 9.5px;
 }
+
+.plc-pin-variable {
+  fill: #98a2b3 !important;
+}
