@@ -26,7 +26,7 @@
   border-bottom: 1px solid var(--plc-border);
 }
 .plc-toolbar strong { font-size: 14px; }
-.plc-toolbar span {
+.plc-toolbar .plc-language {
   color: #175cd3;
   background: #eff8ff;
   border-radius: 999px;
@@ -34,12 +34,51 @@
   font-size: 11px;
   font-weight: 700;
 }
-.plc-canvas { height: 340px; background: #fbfcfe; }
+.plc-viewport-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 6px 8px;
+  background: var(--plc-panel);
+  border-bottom: 1px solid var(--plc-border);
+}
+.plc-viewport-controls button {
+  min-width: 30px;
+  height: 28px;
+  padding: 0 8px;
+  color: #344054;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+}
+.plc-viewport-controls button:hover { background: #f2f4f7; }
+.plc-viewport-controls button:focus-visible {
+  outline: 2px solid #84adff;
+  outline-offset: 1px;
+}
+.plc-viewport-controls .plc-zoom-value { min-width: 58px; }
+.plc-viewport-controls .plc-fit-button { min-width: 42px; }
+.plc-canvas {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  background: #fbfcfe;
+  cursor: grab;
+  overscroll-behavior: contain;
+  touch-action: none;
+  user-select: none;
+}
+.plc-canvas.is-dragging { cursor: grabbing; }
 .plc-canvas svg {
   display: block;
   width: 100%;
-  height: auto;
-  min-height: 160px;
+  height: 100%;
   shape-rendering: geometricPrecision;
   text-rendering: geometricPrecision;
 }

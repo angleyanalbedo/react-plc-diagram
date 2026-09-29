@@ -1,7 +1,11 @@
 {
   "name": "@react-plc-diagram/react",
   "version": "0.1.0",
+  "description": "Interactive SVG viewer for LD and FBD PLC diagrams in React",
+  "license": "MIT",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -10,8 +14,18 @@
     "./style.css": "./dist/index.css"
   },
   "files": [
-    "dist"
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/index.css",
+    "dist/OpenPlcViewer.d.ts",
+    "dist/parsePlcopenFbd.d.ts"
   ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
     "typecheck": "tsc -p tsconfig.json --noEmit"

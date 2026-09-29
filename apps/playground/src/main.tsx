@@ -1,12 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import type { OpenPlcProgram, OpenPlcVariant } from "@react-plc-diagram/core";
-import { OpenPlcViewer, parsePlcopenFbd } from "@react-plc-diagram/react";
+import { OpenPlcViewer } from "@react-plc-diagram/react";
 import "@react-plc-diagram/react/style.css";
 import "./page.css";
-import paperMachineXml from "../../../fixtures/plcopen-xml/complex/paper-machine.xml?raw";
-
-const importedFbdProgram = parsePlcopenFbd(paperMachineXml);
 
 const ldProgram: OpenPlcProgram = {
   name: "MotorLatch",
@@ -138,7 +135,6 @@ function App() {
                 <article>
           <div className="heading"><span>FBD</span><h2>多功能块</h2></div>
           <OpenPlcViewer program={fbdProgram} />
-          <OpenPlcViewer program={importedFbdProgram} className="imported-fbd" />
         </article>
         <article>
           <div className="heading"><span>LD</span><h2>梯形图中的功能块</h2></div>
